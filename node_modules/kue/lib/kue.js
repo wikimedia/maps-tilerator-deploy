@@ -187,6 +187,7 @@ Queue.prototype.checkJobPromotion = function( promotionOptions ) {
           //TODO do a ZREMRANGEBYRANK jobs:delayed 0 ids.length-1
           var doUnlock = _.after(ids.length, unlock);
           ids.forEach(function( id ) {
+            id = client.stripFIFO(id);
             Job.get(id, function( err, job ) {
               if( err ) return doUnlock();
               events.emit(id, 'promotion');
@@ -237,6 +238,7 @@ Queue.prototype.checkActiveJobTtl = function( ttlOptions ) {
 
           var waitForAcks = setTimeout( function(){
             idsRemaining.forEach( function( id ){
+              id = client.stripFIFO(id);
               Job.get(id, function( err, job ) {
                 if( err ) return doUnlock();
                 job.failedAttempt( { error: true, message: 'TTL exceeded' }, doUnlock );
@@ -245,6 +247,7 @@ Queue.prototype.checkActiveJobTtl = function( ttlOptions ) {
           }, 1000 );
 
           ids.forEach(function( id ) {
+            id = client.stripFIFO(id);
             events.emit(id, 'ttl exceeded');
           });
         });
@@ -377,9 +380,6 @@ Queue.prototype.shutdown = function( timeout, type, fn ) {
 
   var cleanup = function() {
     if( self.shuttingDown ) {
-      self.client && self.client.end();
-      self.lockClient && self.lockClient.end();
-      self.client     = null;
       self.workers    = [];
       exports.workers = [];
       self.removeAllListeners();
@@ -387,6 +387,10 @@ Queue.prototype.shutdown = function( timeout, type, fn ) {
       events.unsubscribe();
       // destroy redis client and pubsub
       redis.reset();
+      self.client && self.client.quit();
+      self.client = null;
+      self.lockClient && self.lockClient.quit();
+      self.lockClient = null;
     }
   };
 
@@ -454,7 +458,14 @@ Queue.prototype.types = function( fn ) {
  */
 
 Queue.prototype.state = function( state, fn ) {
-  this.client.zrange(this.client.getKey('jobs:' + state), 0, -1, fn);
+  var self = this;
+  this.client.zrange(this.client.getKey('jobs:' + state), 0, -1, function(err,ids){
+    var fixedIds = [];
+    ids.forEach(function(id){
+        fixedIds.push(self.client.stripFIFO(id));
+      });
+    fn(err,fixedIds);
+  });
   return this;
 };
 

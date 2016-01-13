@@ -245,10 +245,10 @@ Worker.prototype.zpop = function( key, fn ) {
     .zrange(key, 0, 0)
     .zremrangebyrank(key, 0, 0)
     .exec(function( err, res ) {
-      if( err ) return fn(err);
-      var id = res[ 0 ][ 0 ];
-      fn(null, id);
-    });
+      if( err || !res || !res[ 0 ] || !res[ 0 ].length ) return fn(err);
+      var id = res[ 0 ][ 0 ] || res[ 0 ][ 1 ][ 0 ];
+      fn(null, this.client.stripFIFO(id));
+    }.bind(this));
 };
 
 /**
@@ -316,13 +316,12 @@ Worker.prototype.shutdown = function( timeout, fn ) {
     shutdownTimer && clearTimeout(shutdownTimer);
     self.removeAllListeners();
     self.job        = null;
-    //fix half-blob job fetches if any...
-    self.client.lpush(self.client.getKey(self.type + ':jobs'), 1);
     //Safeyly kill any blpop's that are waiting.
     (self.type in clients) && clients[ self.type ].quit();
     delete clients[ self.type ];
     self.cleaned_up = true;
-    fn();
+    //fix half-blob job fetches if any
+    self.client.lpush(self.client.getKey(self.type + ':jobs'), 1, fn);
   };
 
   if( !this.running ) return _fn();
