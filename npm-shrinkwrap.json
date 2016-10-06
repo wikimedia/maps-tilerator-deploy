@@ -878,9 +878,9 @@
       "resolved": "git+https://github.com/kartotherian/kartotherian-overzoom.git#bd5707f405cae596a114d49302c22f647920b891"
     },
     "kartotherian-postgres": {
-      "version": "0.0.5",
+      "version": "0.0.7",
       "from": "git+https://github.com/kartotherian/kartotherian-postgres.git",
-      "resolved": "git+https://github.com/kartotherian/kartotherian-postgres.git#98269aca4a3f7cee3d70c36ec9066703ef82c788",
+      "resolved": "git+https://github.com/kartotherian/kartotherian-postgres.git#dc57505b5389b55386b2c360ffa8049896a0cee0",
       "dependencies": {
         "pg.js": {
           "version": "4.1.1",
@@ -2219,7 +2219,7 @@
                     },
                     "minimatch": {
                       "version": "3.0.3",
-                      "from": "minimatch@>=3.0.0 <4.0.0",
+                      "from": "minimatch@>=3.0.2 <4.0.0",
                       "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.0.3.tgz",
                       "dependencies": {
                         "brace-expansion": {
