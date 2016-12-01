@@ -1,0 +1,9 @@
+---
+/etc/tilerator/config.yaml:
+  template: config.yaml.j2
+  erb_syntax: True
+  remote_vars: /etc/tilerator/config-vars.yaml
+/etc/tileratorui/config.yaml:
+  template: config.yaml.j2
+  erb_syntax: True
+  remote_vars: /etc/tileratorui/config-vars.yaml

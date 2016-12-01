@@ -1,0 +1,51 @@
+logging:
+  level: warn
+  name: <%= log_name %>
+  streams:
+    - host: <%= logstash_host %>
+      port: <%= logstash_port %>
+      type: gelf
+    - level: warn
+      path: <%= log_file %>
+      type: file
+metrics:
+  host: <%= metrics_host %>
+  name: <%= metrics_name %>
+  port: <%= metrics_port %>
+  type: statsd
+num_workers: <%= num_workers %>
+services:
+  - conf:
+      allSourcesPublic: true
+      cors: "*"
+      daemonOnly: true
+      mwapi_req:
+        body: "{{ default(request.query, {}) }}"
+        headers:
+          host: "{{request.params.domain}}"
+          user-agent: "{{user-agent}}"
+        method: post
+        uri: <%= mwapi_uri %>
+      port: <%= port %>
+      proxy: <%= proxy %>
+      restbase_req:
+        body: "{{request.body}}"
+        headers: "{{request.headers}}"
+        method: "{{request.method}}"
+        query: "{{ default(request.query, {}) }}"
+        uri: "<%= restbase_uri %>/{{domain}}/v1/{+path}"
+      sources: <%= conf_sources %>
+      variables:
+        cassandra-pswd: <%= cassandra_password %>
+        cassandra-servers:
+        <% for server in cassandra_servers -%>
+          - <%= server %>
+        <% endfor -%>
+        cassandra-user: <%= cassandra_user %>
+        osmdb-pswd: <%= osmdb_password %>
+        osmdb-user: <%= osmdb_user %>
+    entrypoint: <%= entrypoint %>
+    module: <%= module %>
+    name: <%= name %>
+worker_heap_limit_mb: <%= worker_heap_limit_mb %>
+worker_heartbeat_timeout: <%= worker_heartbeat_timeout %>
