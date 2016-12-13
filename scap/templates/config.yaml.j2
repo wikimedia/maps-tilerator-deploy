@@ -18,7 +18,7 @@ services:
   - conf:
       allSourcesPublic: true
       cors: "*"
-      daemonOnly: true
+      daemonOnly: <%= daemon_only %>
       mwapi_req:
         body: "{{ default(request.query, {}) }}"
         headers:
@@ -28,6 +28,7 @@ services:
         uri: <%= mwapi_uri %>
       port: <%= port %>
       proxy: <%= proxy %>
+      redis: <%= redis_server %>
       restbase_req:
         body: "{{request.body}}"
         headers: "{{request.headers}}"
@@ -35,6 +36,7 @@ services:
         query: "{{ default(request.query, {}) }}"
         uri: "<%= restbase_uri %>/{{domain}}/v1/{+path}"
       sources: <%= conf_sources %>
+      uiOnly: <%= ui_only %>
       variables:
         cassandra-pswd: <%= cassandra_password %>
         cassandra-servers:
