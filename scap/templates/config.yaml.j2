@@ -46,6 +46,15 @@ services:
         cassandra-user: <%= cassandra_user %>
         osmdb-pswd: <%= osmdb_password %>
         osmdb-user: <%= osmdb_user %>
+      modules:
+      - tilelive-bridge
+      - tilelive-vector
+      - "@kartotherian/autogen"
+      - "@kartotherian/cassandra"
+      - "@kartotherian/layermixer"
+      - "@kartotherian/overzoom"
+      - "@kartotherian/postgres"
+      - "@kartotherian/substantial"
     entrypoint: <%= entrypoint %>
     module: <%= module %>
     name: <%= name %>
