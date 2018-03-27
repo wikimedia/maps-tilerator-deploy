@@ -48,7 +48,6 @@ services:
         osmdb-user: <%= osmdb_user %>
       modules:
       - tilelive-bridge
-      - tilelive-vector
       - "@kartotherian/autogen"
       - "@kartotherian/babel"
       - "@kartotherian/cassandra"
@@ -56,6 +55,7 @@ services:
       - "@kartotherian/overzoom"
       - "@kartotherian/postgres"
       - "@kartotherian/substantial"
+      - "@kartotherian/tilelive-vector"
     entrypoint: <%= entrypoint %>
     module: <%= module %>
     name: <%= name %>
