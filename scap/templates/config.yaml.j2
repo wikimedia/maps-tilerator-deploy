@@ -37,7 +37,7 @@ services:
         uri: "<%= restbase_uri %>/{{domain}}/v1/{+path}"
       sources:
         # Generates vtiles from database
-        genall:
+        genallraw:
           public: true
           formats: [pbf]
           uri: bridge://
@@ -53,11 +53,12 @@ services:
               user: {var: osmdb-user}
               password: {var: osmdb-pswd}
 
-        # genall:
-        #   uri: json2tags://
-        #   params:
-        #     source: {ref: genallraw}
-        #     tag: name
+        # expands name_ json blob into several name_{code} tags
+        genall:
+          uri: json2tags://
+          params:
+            source: {ref: genallraw}
+            tag: name
 
         # View tiles as generated directly from the database. Don't view zoom0-5
         genview:
@@ -114,13 +115,14 @@ services:
           xmlSetParams:
             source: {ref: <%= storage_id %>}
 
-        # osm-localized:
-        #   uri: babel://
-        #   params:
-        #     source: {ref: <%= storage_id %>}
-        #     tag: name
-        #     combineName: false
-        #     defaultLanguage: en
+        # replace all name_{code} tags with a single name tag based on lang param
+        osm-localized:
+          uri: babel://
+          params:
+            source: {ref: <%= storage_id %>}
+            tag: name
+            combineName: false
+            defaultLanguage: en
 
         # OSM PBF source
         osm-pbf:
@@ -128,7 +130,7 @@ services:
           formats: [pbf]
           uri: overzoom://
           params:
-            source: {ref: <%= storage_id %>}
+            source: {ref: osm-localized}
             maxzoom: 19
           overrideInfo:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -190,7 +192,7 @@ services:
       modules:
       - tilelive-bridge
       - "@kartotherian/autogen"
-      # - "@kartotherian/babel"
+      - "@kartotherian/babel"
       - "@kartotherian/cassandra"
       - "@kartotherian/layermixer"
       - "@kartotherian/overzoom"
