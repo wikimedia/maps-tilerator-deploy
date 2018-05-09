@@ -40,10 +40,10 @@ services:
         genallraw:
           public: true
           formats: [pbf]
-          uri: bridge://
-          xml:
-            npm: ['@kartotherian/osm-bright-source', 'data.xml']
-          xmlSetDataSource:
+          uri: tmsource://
+          yaml:
+            npm: ['@kartotherian/osm-bright-source', 'data.yml']
+          yamlSetDataSource:
             if:
               dbname: gis
               host: ''
@@ -68,10 +68,10 @@ services:
           static: true
           maxheight: 2048
           maxwidth: 2048
-          uri: vector://
-          xml:
-            loader: <%= style %>
-          xmlSetParams:
+          uri: tmstyle://
+          yaml:
+            npm: [<%= style %>, "project.yml"]
+          yamlSetParams:
             source: {ref: genall}
 
         # Use this source instead of 'genall' to avoid saving simple tiles with just water or landuse
@@ -100,6 +100,7 @@ services:
         #    repfactor: 4
         #    durablewrite: 0
         #    createIfMissing: false
+        #    copyInfoFrom: {ref: gen}
 
         # View tiles as generated directly from the database. Don't view zoom0-5
         <%= storage_id %>view:
@@ -109,10 +110,10 @@ services:
           static: true
           maxheight: 2048
           maxwidth: 2048
-          uri: vector://
-          xml:
-            loader: <%= style %>
-          xmlSetParams:
+          uri: tmstyle://
+          yaml:
+            npm: [<%= style %>, "project.yml"]
+          yamlSetParams:
             source: {ref: <%= storage_id %>}
 
         # replace all name_{code} tags with a single name tag based on lang param
@@ -147,10 +148,10 @@ services:
           static: true
           maxheight: 2048
           maxwidth: 2048
-          uri: vector://
-          xml:
-            loader: <%= style %>
-          xmlSetParams:
+          uri: tmstyle://
+          yaml:
+            npm: [<%= style %>, "project.yml"]
+          yamlSetParams:
             source: {ref: osm-pbf}
           overrideInfo:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -167,12 +168,12 @@ services:
           static: true
           maxheight: 2048
           maxwidth: 2048
-          uri: vector://
-          xml:
-            loader: <%= style %>
-          xmlSetParams:
+          uri: tmstyle://
+          yaml:
+            npm: [<%= style %>, "project.yml"]
+          yamlSetParams:
             source: {ref: osm-pbf}
-          xmlExceptLayers: ['country_label', 'place_label', 'poi_label']
+          yamlExceptLayers: ['country_label', 'place_label', 'poi_label']
           overrideInfo:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
             tiles: ['https://maps.wikimedia.org/osm/{z}/{x}/{y}.png']
@@ -190,7 +191,8 @@ services:
         osmdb-pswd: <%= osmdb_password %>
         osmdb-user: <%= osmdb_user %>
       modules:
-      - tilelive-bridge
+      - tilelive-tmsource
+      - tilelive-tmstyle
       - "@kartotherian/autogen"
       - "@kartotherian/babel"
       - "@kartotherian/cassandra"
