@@ -42,7 +42,7 @@ services:
           formats: [pbf]
           uri: tmsource://
           yaml:
-            npm: ['@kartotherian/osm-bright-source', 'data.yml']
+            npm: [<%= source %>, 'data.yml']
           yamlSetDataSource:
             if:
               dbname: gis
