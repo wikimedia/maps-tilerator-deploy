@@ -1,2 +1,2 @@
-source: '@kartotherian/osm-bright-source'
-style: '@kartotherian/osm-bright-style'
+source_location: '@kartotherian/osm-bright-source'
+style_location: '@kartotherian/osm-bright-style'

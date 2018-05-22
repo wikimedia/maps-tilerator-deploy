@@ -1,2 +1,2 @@
-source: '@kartotherian/meddo'
-style: '@kartotherian/brighmed'
+source_location: '@kartotherian/meddo'
+style_location: '@kartotherian/brighmed'
