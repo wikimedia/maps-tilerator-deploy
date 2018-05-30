@@ -1,2 +1,3 @@
 source_location: '@kartotherian/osm-bright-source'
 style_location: '@kartotherian/osm-bright-style'
+dbname: gis

@@ -45,7 +45,7 @@ services:
             npm: ['<%= source_location %>', 'data.yml']
           yamlSetDataSource:
             if:
-              dbname: gis
+              dbname: '<%= dbname %>'
               host: ''
               type: postgis
             set:
