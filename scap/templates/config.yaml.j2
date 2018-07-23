@@ -191,7 +191,6 @@ services:
         osmdb-pswd: <%= osmdb_password %>
         osmdb-user: <%= osmdb_user %>
       modules:
-      - tilelive-tmsource
       - tilelive-tmstyle
       - "@kartotherian/autogen"
       - "@kartotherian/babel"
@@ -200,6 +199,7 @@ services:
       - "@kartotherian/overzoom"
       - "@kartotherian/postgres"
       - "@kartotherian/substantial"
+      - "@kartotherian/tilelive-tmsource"
       - "@kartotherian/tilelive-vector"
     entrypoint: <%= entrypoint %>
     module: <%= module %>
