@@ -137,7 +137,7 @@ services:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
             tiles: ['https://maps.wikimedia.org/osm-pbf/{z}/{x}/{y}.pbf']
           defaultHeaders:
-            Cache-Control: 'public, max-age=86400, s-maxage=86400'
+            Cache-Control: 'public, max-age=900, s-maxage=86400'
 
         # OSM map with international labeling - will be used as default
         osm-intl:
@@ -157,7 +157,7 @@ services:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
             tiles: ['https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png']
           defaultHeaders:
-            Cache-Control: 'public, max-age=86400, s-maxage=86400'
+            Cache-Control: 'public, max-age=900, s-maxage=86400'
 
         # OSM map without any labels
         osm:
@@ -178,7 +178,7 @@ services:
             attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
             tiles: ['https://maps.wikimedia.org/osm/{z}/{x}/{y}.png']
           defaultHeaders:
-            Cache-Control: 'public, max-age=86400, s-maxage=86400'
+            Cache-Control: 'public, max-age=900, s-maxage=86400'
 
       uiOnly: <%= ui_only %>
       variables:
