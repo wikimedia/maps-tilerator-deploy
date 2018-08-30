@@ -180,6 +180,16 @@ services:
           defaultHeaders:
             Cache-Control: 'public, max-age=900, s-maxage=86400'
 
+      eventlogging_service_uri: <%= eventlogging_service_uri %>
+
+      <%- if sources_to_invalidate|length > 0 %>
+      sources_to_invalidate:
+      <% for source in sources_to_invalidate %>
+        - <%= source %>
+      <% endfor %>
+      <% endif -%>
+
+      tile_server_domain: <%= tile_server_domain %>
       uiOnly: <%= ui_only %>
       variables:
         cassandra-pswd: <%= cassandra_password %>
