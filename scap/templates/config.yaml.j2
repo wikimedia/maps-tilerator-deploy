@@ -27,7 +27,6 @@ services:
         method: post
         uri: <%= mwapi_uri %>
       port: <%= port %>
-      proxy: <%= proxy %>
       redis: <%= redis_server %>
       restbase_req:
         body: "{{request.body}}"
