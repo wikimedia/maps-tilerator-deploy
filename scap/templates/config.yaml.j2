@@ -18,6 +18,7 @@ metrics:
 num_workers: <%= num_workers %>
 services:
   - conf:
+      tileTimeOut: 300000
       allSourcesPublic: true
       cors: "*"
       daemonOnly: <%= daemon_only %>
